@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
-    List<Review> findByVehicleId(int vehicleid);
+    List<Review> findByProductId(int productId);
 }

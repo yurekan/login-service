@@ -5,15 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import com.ecommerce.login_service.exceptions.ErrorObject;
 
 import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(VehicleNotFoundException.class)
-    public ResponseEntity<ErrorObject> handlePokemonNotFoundException(VehicleNotFoundException ex, WebRequest request) {
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorObject> handlePokemonNotFoundException(ProductNotFoundException ex, WebRequest request) {
 
         ErrorObject errorObject = new ErrorObject();
 

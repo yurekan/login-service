@@ -1,12 +1,12 @@
 package com.ecommerce.login_service.service.impl;
 
 import com.ecommerce.login_service.dto.ReviewDto;
+import com.ecommerce.login_service.exceptions.ProductNotFoundException;
 import com.ecommerce.login_service.exceptions.ReviewNotFoundException;
-import com.ecommerce.login_service.exceptions.VehicleNotFoundException;
+import com.ecommerce.login_service.model.Product;
 import com.ecommerce.login_service.model.Review;
-import com.ecommerce.login_service.model.Vehicle;
+import com.ecommerce.login_service.repository.ProductRepository;
 import com.ecommerce.login_service.repository.ReviewRepository;
-import com.ecommerce.login_service.repository.VehicleRepository;
 import com.ecommerce.login_service.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,33 +22,33 @@ public class ReviewServiceImpl implements ReviewService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private VehicleRepository vehicleRepository;
+    private ProductRepository productRepository;
 
     @Override
-    public ReviewDto createReview(int vehicleid, ReviewDto reviewDto){
+    public ReviewDto createReview(int productId, ReviewDto reviewDto){
         Review review = mapToEntity(reviewDto);
-        Vehicle vehicle = vehicleRepository.findById(vehicleid).orElseThrow(() ->
-                new VehicleNotFoundException("Vehicle associated with review not found"));
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new ProductNotFoundException("Vehicle associated with review not found"));
 
-        review.setVehicle(vehicle);
+        review.setProduct(product);
 
         Review newReview = reviewRepository.save(review);
         return mapToDto(newReview);
     }
 
     @Override
-    public List<ReviewDto> getReviewByVehicleId(int vehicleid){
-        List<Review> reviews = reviewRepository.findByVehicleId(vehicleid);
+    public List<ReviewDto> getReviewByProductId(int productId){
+        List<Review> reviews = reviewRepository.findByProductId(productId);
         return reviews.stream().map(review -> mapToDto(review)).collect(Collectors.toList());
     }
 
     @Override
-    public ReviewDto getReviewById(int reviewId, int pokemonId) {
-        Vehicle vehicle = vehicleRepository.findById(pokemonId).orElseThrow(() -> new VehicleNotFoundException("Vehicle with associated review not found"));
+    public ReviewDto getReviewById(int reviewId, int productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Vehicle with associated review not found"));
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review with associate vehicle not found"));
 
-        if(review.getVehicle().getId() != vehicle.getId()) {
+        if(review.getProduct().getId() != product.getId()) {
             throw new ReviewNotFoundException("This review does not belong to a vehicle");
         }
 
@@ -56,12 +56,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDto updateReview(int vehicleid, int reviewId, ReviewDto reviewDto) {
-        Vehicle vehicle = vehicleRepository.findById(vehicleid).orElseThrow(() -> new VehicleNotFoundException("Vehicle with associated review not found"));
+    public ReviewDto updateReview(int productId, int reviewId, ReviewDto reviewDto) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Vehicle with associated review not found"));
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review with associate vehicle not found"));
 
-        if(review.getVehicle().getId() != vehicle.getId()) {
+        if(review.getProduct().getId() != product.getId()) {
             throw new ReviewNotFoundException("This review does not belong to a vehicle");
         }
 
@@ -76,12 +76,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(int vehicleId, int reviewId) {
-        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new VehicleNotFoundException("Vehicle with associated review not found"));
+    public void deleteReview(int productId, int reviewId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Vehicle with associated review not found"));
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review with associate vehicle not found"));
 
-        if(review.getVehicle().getId() != vehicle.getId()) {
+        if(review.getProduct().getId() != product.getId()) {
             throw new ReviewNotFoundException("This review does not belong to a vehicle");
         }
 

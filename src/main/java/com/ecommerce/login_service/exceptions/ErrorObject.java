@@ -1,6 +1,5 @@
 package com.ecommerce.login_service.exceptions;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

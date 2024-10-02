@@ -27,7 +27,7 @@ public class ReviewController {
 
     @GetMapping("/vehicle/{vehicleId}/reviews")
     public List<ReviewDto> getReviewsByPokemonId(@PathVariable(value = "vehicleId") int vehicleId) {
-        return reviewService.getReviewByVehicleId(vehicleId);
+        return reviewService.getReviewByProductId(vehicleId);
     }
 
     @GetMapping("/vehicle/{vehicleId}/reviews/{id}")
